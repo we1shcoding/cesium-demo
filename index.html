@@ -2,19 +2,17 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>우성이산 3D 지형 뷰</title>
+<!-- 워커·자원 기본 경로 -->
+<script>
+  window.CESIUM_BASE_URL = 'https://cdn.jsdelivr.net/npm/cesium@1.130/Build/Cesium/';
+</script>
 
-  <!-- ① 워커·자원 로드 기본 경로 (반드시 Cesium.js 앞에 배치) -->
-  <script>
-    window.CESIUM_BASE_URL = 'https://cesiumjs.org/releases/1.130/Build/Cesium/';
-  </script>
-
-  <!-- ② CesiumJS 라이브러리 & Widgets CSS -->
-  <script src="https://cesiumjs.org/releases/1.130/Build/Cesium/Cesium.js"></script>
-  <link
-    href="https://cesiumjs.org/releases/1.130/Build/Cesium/Widgets/widgets.css"
-    rel="stylesheet"
-  />
+<!-- Cesium.js & CSS 로드 -->
+<script src="https://cdn.jsdelivr.net/npm/cesium@1.130/Build/Cesium/Cesium.js"></script>
+<link
+  href="https://cdn.jsdelivr.net/npm/cesium@1.130/Build/Cesium/Widgets/widgets.css"
+  rel="stylesheet"
+/>
 
   <!-- ③ 페이지 전반 CSS -->
   <style>
