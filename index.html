@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>우성이산 3D 지형 뷰</title>
+
+  <!-- ① 워커·자원 로드 기본 경로 (반드시 Cesium.js 앞에 배치) -->
+  <script>
+    window.CESIUM_BASE_URL = 'https://cesiumjs.org/releases/1.130/Build/Cesium/';
+  </script>
+
+  <!-- ② CesiumJS 라이브러리 & Widgets CSS -->
+  <script src="https://cesiumjs.org/releases/1.130/Build/Cesium/Cesium.js"></script>
+  <link
+    href="https://cesiumjs.org/releases/1.130/Build/Cesium/Widgets/widgets.css"
+    rel="stylesheet"
+  />
+
+  <!-- ③ 페이지 전반 CSS -->
+  <style>
+    /* Sandcastle HTML body/CSS에서 복사해온 부분 */
+    /* @import url(../templates/bucket.css); */ /* 제거하거나 남겨두셔도 무방합니다 */
+
+    html, body, #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    /* 로딩 오버레이 스타일 */
+    #loadingOverlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.6);
+      color: white;
+      font-size: 1.5rem;
+      padding: 1rem 2rem;
+      border-radius: 0.5rem;
+      z-index: 100;
+    }
+    /* 툴바(필요 시 사용) */
+    #toolbar {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      z-index: 90;
+    }
+  </style>
+</head>
+<body>
+  <!-- ④ 뷰어 컨테이너 & 로딩 오버레이 & 툴바 -->
+  <div id="cesiumContainer" class="fullSize"></div>
+  <div id="loadingOverlay"><h1>Loading…</h1></div>
+  <div id="toolbar"></div>
+
+  <!-- ⑤ Ion 토큰 + JS 코드 -->
+  <script>
+    // — 반드시 Cesium.js가 로드된 직후, 워커 경로 설정 후에 토큰을 선언
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkY2U4ZDI4Ni05OWM5LTRkMzYtYWM2OS04NjU4YWE3ZjU3MTEiLCJpZCI6MzEyODAzLCJpYXQiOjE3NTAxMjExNDV9.I5dbRNa1mJ2hTNH0Fe2rVT9YLNhnvaxfvaq7Glu2WdM';
+
+    // — Sandcastle JavaScript Code 탭에서 제공된 부분
+    const viewer = new Cesium.Viewer("cesiumContainer", {
+      terrain: Cesium.Terrain.fromWorldTerrain(),
+    });
+
+    // 정확 좌표(도룡동 우성이산, 네이버 지도 기준)
+    const target = Cesium.Cartesian3.fromDegrees(127.3859237, 36.3848644, 500); // 고도 500m
+
+    // 카메라 오프셋 (뒤쪽 300m, 위로 200m)
+    const offset = new Cesium.Cartesian3(0.0, -300.0, 200.0);
+
+    viewer.camera.lookAt(target, offset);
+    viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+
+    // — 뷰어 준비가 끝나면 로딩 오버레이 숨기기
+    viewer.scene.globe.tileLoadProgressEvent.addEventListener(function(remaining) {
+      if (remaining === 0) {
+        const overlay = document.getElementById("loadingOverlay");
+        if (overlay) overlay.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
